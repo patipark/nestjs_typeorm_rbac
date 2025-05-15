@@ -5,7 +5,7 @@ export const getDatabaseConfig = (configService: ConfigService): TypeOrmModuleOp
   return {
     type: configService.get<string>('DB_DIALECT') as 'mariadb',
     host: configService.get<string>('DB_HOST'),
-    port: parseInt(configService.get<string>('DB_PORT', '3306'), 10),
+    port: parseInt(configService.get<string>('DB_PORT', '3306'), 3306),
     username: configService.get<string>('DB_USER'),
     password: configService.get<string>('DB_PASS'),
     database: configService.get<string>('DB_NAME'),
@@ -15,8 +15,6 @@ export const getDatabaseConfig = (configService: ConfigService): TypeOrmModuleOp
     charset: 'utf8mb4',
     // Add these options to fix authentication issues
     ssl: false,
-    extra: {
-      authPlugin: 'mysql_native_password',
-    }
+
   };
 };
