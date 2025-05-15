@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
 
 export class CreateRoleDto {
   @IsString()
@@ -8,4 +8,8 @@ export class CreateRoleDto {
   @IsString()
   @IsOptional()
   description?: string;
-} 
+  
+  @IsNumber()
+  @IsOptional()
+  parentRoleId?: number | null;
+}

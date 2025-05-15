@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
@@ -29,6 +29,19 @@ export class RolesController {
     return this.rolesService.findOne(+id);
   }
 
+  @Get(':id/children')
+  @Roles('admin')
+  async findChildren(@Param('id') id: string) {
+    const role = await this.rolesService.findOne(+id);
+    return role?.childRoles || [];
+  }
+  
+  @Get(':id/check-capability')
+  @Roles('admin')
+  checkCapability(@Param('id') id: string, @Query('roleName') roleName: string) {
+    return this.rolesService.hasCapability(+id, roleName);
+  }
+
   @Patch(':id')
   @Roles('admin')
   update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
@@ -40,4 +53,4 @@ export class RolesController {
   remove(@Param('id') id: string) {
     return this.rolesService.remove(+id);
   }
-} 
+}
