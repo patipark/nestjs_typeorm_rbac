@@ -10,8 +10,13 @@ export const getDatabaseConfig = (configService: ConfigService): TypeOrmModuleOp
     password: configService.get<string>('DB_PASS'),
     database: configService.get<string>('DB_NAME'),
     entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-    synchronize: configService.get<string>('NODE_ENV') === 'development',
+    synchronize: true, // Enable synchronize for development to auto-create the role_hierarchy table
     logging: configService.get<string>('NODE_ENV') === 'development',
-    charset: 'utf8mb4'
+    charset: 'utf8mb4',
+    // Add these options to fix authentication issues
+    ssl: false,
+    extra: {
+      authPlugin: 'mysql_native_password',
+    }
   };
 };

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, ManyToOne, OneToMany, JoinTable } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
 import { User } from '../../users/entities/user.entity';
 
 @Entity('roles')
@@ -12,10 +12,9 @@ export class Role {
   @Column({ nullable: true })
   description: string;
 
+  @Column('simple-array', { nullable: true })
+  capabilities: string[];
+
   @ManyToMany(() => User, user => user.roles)
   users: User[];
-    @ManyToOne(() => Role, role => role.childRoles, { nullable: true })
-  parentRole: Role | null;
-  
-  @OneToMany(() => Role, role => role.parentRole)  childRoles: Role[];
 }

@@ -1,6 +1,6 @@
-# NestJS TypeORM RBAC with Role Inheritance
+# NestJS TypeORM RBAC with Role Hierarchy Table
 
-A Role-Based Access Control (RBAC) implementation using NestJS, TypeORM, and JWT authentication, featuring hierarchical role inheritance.
+A Role-Based Access Control (RBAC) implementation using NestJS, TypeORM, and JWT authentication, featuring hierarchical role inheritance using a dedicated role_hierarchy table for better flexibility and performance.
 
 ## Features
 
@@ -28,6 +28,20 @@ user (base level)
 
 For example, a user with the 'manager' role automatically has all permissions granted to 'editor' and 'user' roles.
 
+## Role Hierarchy Architecture
+
+This application uses a dedicated `role_hierarchy` table to manage role relationships, which provides the following benefits:
+
+1. **Improved flexibility**: Roles can be reorganized without modifying each individual role entity
+2. **Better performance**: Hierarchies can be traversed more efficiently using database queries
+3. **Cleaner data model**: Role entities contain only their own properties, not relationships
+4. **Future extensibility**: Easily supports multiple inheritance if needed in the future
+
+The role hierarchy is managed through the following tables:
+
+- `roles`: Contains basic role information (id, name, description, capabilities)
+- `role_hierarchy`: Junction table mapping parent-child relationships between roles
+
 ## Project Structure
 
 ```plaintext
@@ -35,13 +49,17 @@ src/
   auth/             # Authentication module
   config/           # Configuration files
   roles/            # Role management
+    entities/
+      role.entity.ts              # Role entity
+      role-hierarchy.entity.ts    # Role hierarchy relationship entity
   users/            # User management
   test-access/      # Test endpoints for role access
   app.module.ts     # Main application module
 docs/
-  ROLE_INHERITANCE_GUIDE.md          # Documentation for role inheritance
-  ROLE_INHERITANCE_TEST_RESULTS.md   # Test results for role inheritance
-  ROLE_INHERITANCE_OPTIMIZATION.md   # Performance optimization strategies
+  ROLE_HIERARCHY_TABLE.md              # Documentation for role hierarchy table
+  ROLE_INHERITANCE_GUIDE.md            # Documentation for role inheritance
+  ROLE_INHERITANCE_TEST_RESULTS.md     # Test results for role inheritance
+  ROLE_INHERITANCE_OPTIMIZATION.md     # Performance optimization strategies
 ```
 
 ## Getting Started
@@ -81,22 +99,17 @@ DB_PORT="3306"
 npm run start:dev
 ```
 
-## Role Inheritance
+## Role Inheritance API
 
-This application implements hierarchical role inheritance, allowing roles to inherit permissions from parent roles:
+The application provides the following endpoints for managing role hierarchies:
 
-```plaintext
-Admin
-  └── Manager
-       └── Editor
-            └── User
-```
+- `POST /roles/hierarchy` - Create a new parent-child relationship
+- `GET /roles/:id/children` - Get all child roles of a given role
+- `GET /roles/:id/parent` - Get the parent role of a given role
+- `GET /roles/:id/ancestors` - Get all ancestors in the hierarchy
+- `GET /roles/hierarchy/visualization` - Get a text representation of the role hierarchy
 
-With this structure, a user with the "Manager" role automatically has all permissions granted to "Editor" and "User" roles.
-
-### Using Role Inheritance
-
-1. Create roles with parent-child relationships:
+With this structure, users with higher-level roles automatically inherit all permissions granted to lower-level roles.
 
 ```http
 POST /roles
@@ -117,6 +130,7 @@ For more details, see the following documentation:
 - [Role Inheritance Guide](docs/ROLE_INHERITANCE_GUIDE.md)
 - [Role Inheritance Test Results](docs/ROLE_INHERITANCE_TEST_RESULTS.md)
 - [Performance Optimization Strategies](docs/ROLE_INHERITANCE_OPTIMIZATION.md)
+- [Role Hierarchy Table](docs/ROLE_HIERARCHY_TABLE.md)
 
 ## API Endpoints
 

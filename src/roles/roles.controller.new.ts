@@ -50,6 +50,7 @@ export class RolesController {
   findParent(@Param('id') id: string) {
     return this.rolesService.findParent(+id);
   }
+
   @Get(':id/ancestors')
   @Roles('admin')
   findAncestors(@Param('id') id: string) {
@@ -61,7 +62,7 @@ export class RolesController {
   checkCapability(@Param('id') id: string, @Query('roleName') roleName: string) {
     return this.rolesService.hasCapability(+id, roleName);
   }
-  
+
   @Get('hierarchy/visualization')
   @Roles('admin')
   getHierarchyVisualization() {

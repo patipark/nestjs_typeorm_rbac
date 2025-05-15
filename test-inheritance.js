@@ -89,22 +89,23 @@ async function runTests() {
       await delay(1000);
     }
   }
-
   // Summary
   console.log('\n📊 Test Results Summary:\n');
-  console.log('Endpoint\t| Required Role\t| user\t| editor\t| manager\t| admin');
+  
+  // Set up the table with proper spacing
+  console.log('Endpoint'.padEnd(25) + '| Required Role'.padEnd(15) + '| user'.padEnd(10) + '| editor'.padEnd(15) + '| manager'.padEnd(15) + '| admin');
   console.log('-'.repeat(80));
   
   for (const endpoint of endpoints) {
     const row = [
-      endpoint.url,
-      endpoint.role,
-      results.user?.[endpoint.url] ? '✅' : '❌',
-      results.editor?.[endpoint.url] ? '✅' : '❌',
-      results.manager?.[endpoint.url] ? '✅' : '❌',
-      results.admin?.[endpoint.url] ? '✅' : '❌'
+      endpoint.url.padEnd(24),
+      endpoint.role.padEnd(14),
+      (results.user?.[endpoint.url] ? '✅' : '❌').padEnd(9),
+      (results.editor?.[endpoint.url] ? '✅' : '❌').padEnd(14),
+      (results.manager?.[endpoint.url] ? '✅' : '❌').padEnd(14),
+      (results.admin?.[endpoint.url] ? '✅' : '❌')
     ];
-    console.log(row.join('\t| '));
+    console.log(row.join('| '));
   }
 
   console.log('\n🔍 Role Inheritance Check:\n');

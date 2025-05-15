@@ -8,6 +8,8 @@ Our NestJS TypeORM RBAC application implements role inheritance where higher-lev
 - manager (inherits from editor)
 - admin (inherits from manager)
 
+For detailed role relationship information, refer to the [Role Hierarchy Table](ROLE_HIERARCHY_TABLE.md).
+
 ## Test Results Summary
 
 | Role | Public Access | User Endpoint | Editor Endpoint | Manager Endpoint | Admin Endpoint | /roles API | /users API |

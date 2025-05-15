@@ -1,6 +1,6 @@
 # Performance Optimization for Role Hierarchy
 
-This document outlines strategies for optimizing performance when working with role hierarchies, particularly for applications with complex role structures or a large number of users.
+This document outlines strategies for optimizing performance when working with role hierarchies, particularly for applications with complex role structures or a large number of users. For details on the current role structure, see the [Role Hierarchy Table](ROLE_HIERARCHY_TABLE.md).
 
 ## Current Implementation
 
